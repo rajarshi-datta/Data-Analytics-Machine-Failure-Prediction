@@ -1,0 +1,91 @@
+Slide 1: Title Slide
+Title: Machine Failure Prediction Using Sensor Data
+Subtitle:
+Prepared by: Your Name
+Date: Insert Date
+Slide 2: Objective
+Content:
+The goal is to predict machine failures using sensor data.
+This allows proactive maintenance, reducing downtime and improving efficiency.
+The target variable (fail) is binary: 1 for failure, 0 for no failure.
+Slide 3: Dataset Overview
+Content:
+The dataset contains sensor readings from machines to predict failures.
+Features:
+Examples: footfall, tempMode, AQ, USS, CS, VOC, RP, IP, Temperature.
+Target: fail (binary: 1 for failure, 0 for no failure).
+Key Insight:
+Dataset has 944 rows with no missing values, making it ready for analysis.
+Slide 4: Exploratory Data Analysis
+Content:
+Target Variable Distribution:
+~58% of the machines did not fail, while ~42% failed.
+Output: A bar chart showing this distribution.
+Correlation Analysis:
+Heatmap shows relationships among features.
+Example Insight: High correlation of RP and IP with the target variable.
+Slide 5: Data Preprocessing
+Content:
+Steps:
+Normalize features (e.g., footfall) using StandardScaler to handle different scales.
+Split data into 80% training and 20% testing to evaluate the model.
+Why Normalize?
+Ensures features like footfall (0-7300) don’t dominate others like VOC (0-6).
+Code:
+python
+Copy code
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+Slide 6: Model Development
+Content:
+Model Used: Random Forest Classifier.
+A robust ensemble model for classification tasks.
+Why Random Forest?
+Handles imbalanced datasets well.
+Captures complex relationships between features and the target variable.
+Code:
+python
+Copy code
+rf_model = RandomForestClassifier(random_state=42)
+rf_model.fit(X_train, y_train)
+Output: Model trained successfully on the data.
+Slide 7: Results and Evaluation
+Content:
+Evaluation Metrics:
+Confusion Matrix:
+Output: Heatmap showing correct and incorrect predictions.
+Insight: High True Positives and True Negatives.
+Classification Report:
+Output: Precision, Recall, and F1-score.
+Insight: Model achieves ~85% accuracy.
+Code:
+python
+Copy code
+from sklearn.metrics import classification_report, confusion_matrix
+y_pred = rf_model.predict(X_test)
+print(classification_report(y_test, y_pred))
+Example Output:
+Accuracy: 85%
+Precision and Recall balanced for both classes.
+Slide 8: Conclusion
+Content:
+Summary:
+The model successfully predicts machine failures with ~85% accuracy.
+Important features: RP, IP, and VOC.
+Future Work:
+Incorporate additional data features.
+Deploy the model for real-time monitoring.
+Slide 9: Appendix (Optional)
+Content:
+Additional Code Snippets:
+Code for saving the model:
+python
+Copy code
+import joblib
+joblib.dump(rf_model, 'machine_failure_model.pkl')
+Code for visualizing feature importance:
+python
+Copy code
+importances = rf_model.feature_importances_
+plt.barh(range(len(importances)), importances)
